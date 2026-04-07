@@ -1,3 +1,15 @@
+def repeat_calls(times, arguments):
+    def decorator(func):
+        def wrapper():
+            results = []
+            for i, arg in enumerate(arguments[:times]):
+                result = func(arg)
+                results.append(result)
+                print(f"Вызов {i+1}: calc({arg}) = {result}")
+            return results
+        return wrapper
+    return decorator
+
 def make_calc(op, initial=0):
     count = 0
     result = initial
@@ -27,9 +39,6 @@ def make_calc(op, initial=0):
     return calc
 
 calc = make_calc('+', initial=1)
-print(calc(3))
-print(calc(2))
-print(calc(2))
-print(calc(2))
-print(calc(2))
-print(calc(2))
+
+decorated_calc = repeat_calls(5, [3, 1, 2, 2, 3])(calc)
+print(decorated_calc())
